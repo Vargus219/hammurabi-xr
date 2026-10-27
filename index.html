@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Code of Hammurabi</title>
+<style>
+  :root { --gold: #d4af6a; --ink: #f2ead9; --dim: #b9ad98; --panel: rgba(22,19,16,0.92); }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: #1b1814; color: var(--ink);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; overflow: hidden; }
+  #app, #app canvas { position: fixed; inset: 0; width: 100%; height: 100%; display: block; }
+  #overlay { position: fixed; left: 16px; top: 16px; max-width: 430px; padding: 22px 24px;
+    background: var(--panel); border: 2px solid var(--gold); border-radius: 18px; }
+  #overlay h1 { margin: 0 0 6px; font-size: 26px; letter-spacing: 0.01em; }
+  #overlay p { margin: 0 0 14px; color: var(--dim); font-size: 15px; line-height: 1.45; }
+  .btns { display: flex; flex-direction: column; gap: 10px; }
+  button { font: inherit; font-weight: 650; font-size: 18px; padding: 14px 18px; border-radius: 999px;
+    border: 2px solid var(--gold); background: rgba(212,175,106,0.18); color: var(--ink); cursor: pointer; }
+  button.primary { background: var(--gold); color: #1a1612; }
+  button:disabled { opacity: 0.35; cursor: not-allowed; }
+  button:not(:disabled):hover { filter: brightness(1.12); }
+  #status { margin-top: 12px; font-size: 14px; color: var(--dim); min-height: 1.2em; }
+  #help { position: fixed; left: 16px; bottom: 16px; font-size: 13px; color: var(--dim);
+    background: rgba(22,19,16,0.7); padding: 8px 12px; border-radius: 10px; }
+  #card { position: fixed; right: 16px; top: 16px; width: min(440px, calc(100% - 32px));
+    max-height: calc(100% - 32px); overflow: auto; padding: 22px 24px; background: var(--panel);
+    border: 2px solid var(--gold); border-radius: 18px; }
+  #card header { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+  #card-num { flex: none; width: 40px; height: 40px; border-radius: 50%; background: var(--gold); color: #1a1612;
+    display: grid; place-items: center; font-weight: 800; font-size: 20px; }
+  #card h2 { margin: 0; font-size: 22px; }
+  #card p { line-height: 1.5; margin: 0 0 12px; }
+  #card-quote { border-left: 4px solid var(--gold); padding: 2px 0 2px 14px; margin: 0 0 12px; }
+  #card-quote-text { font-family: Georgia, "Times New Roman", serif; font-style: italic; color: #f1dcaa; margin: 0 0 6px; }
+  #card-quote-src { font-size: 13px; color: var(--dim); }
+  #card-note { font-size: 13px; color: var(--dim); }
+  .think-label { font-size: 12px; font-weight: 800; letter-spacing: 0.12em; color: var(--gold); margin: 4px 0 4px; }
+  #card-think { font-weight: 600; }
+  #card nav { display: flex; gap: 8px; margin-top: 14px; }
+  #card nav button { flex: 1; font-size: 15px; padding: 10px; }
+  [hidden] { display: none !important; }
+  @media (max-width: 760px) {
+    #overlay { right: 16px; max-width: none; }
+    #card { top: auto; bottom: 16px; max-height: 55%; }
+  }
+</style>
+<script type="importmap">
+{ "imports": {
+    "three": "./vendor/three.module.min.js",
+    "three/addons/": "./vendor/addons/"
+} }
+</script>
+</head>
+<body>
+  <div id="app"></div>
+
+  <section id="overlay">
+    <h1 id="title">The Code of Hammurabi</h1>
+    <p>A 3,700-year-old stone of laws from ancient Babylon. Walk around it and select the numbered dots to learn what it says.</p>
+    <div class="btns">
+      <button id="btn-ar" class="primary" disabled>Put it in this room</button>
+      <button id="btn-vr" disabled>Visit the VR gallery</button>
+    </div>
+    <div id="status"></div>
+  </section>
+
+  <div id="help">Drag to look around · scroll to zoom · click a numbered dot</div>
+
+  <aside id="card" hidden>
+    <header><div id="card-num">1</div><h2 id="card-title"></h2></header>
+    <p id="card-body"></p>
+    <div id="card-quote"><p id="card-quote-text"></p><div id="card-quote-src"></div></div>
+    <p id="card-note"></p>
+    <div class="think-label">THINK ABOUT IT</div>
+    <p id="card-think"></p>
+    <nav><button id="card-prev">‹ Back</button><button id="card-close" class="primary">Close</button><button id="card-next">Next ›</button></nav>
+  </aside>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
