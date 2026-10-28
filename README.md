@@ -1,90 +1,98 @@
-# The Code of Hammurabi: WebXR stele
+# WebXR Exhibits (MMUUSD)
 
-This is a life-size Code of Hammurabi stele that middle schoolers can put in a real classroom using Quest 3 passthrough, or visit in a simple VR gallery. Students walk around it and select 8 numbered dots. Each dot shows a short reading, a quote from the laws, and a "Think about it" question.
+These are life-size 3D artifacts that students can explore on Quest 3 headsets, either in passthrough (the artifact appears in the real classroom) or in a VR gallery. They also work on a Chromebook. The first exhibit is **The Code of Hammurabi**, built for the Grade 5 Ancient Cultures unit (Bend 1: Mesopotamia and the Fertile Crescent).
 
-It works in three places:
-
-| Where | What happens |
-|---|---|
-| **Quest 3, "Put it in this room"** | Passthrough AR. Students point at the floor and pull the trigger or pinch to set the stele down, then walk around it. |
-| **Quest 3, "Visit the VR gallery"** | The same stele in a dim virtual room. Use this if passthrough isn't available. |
-| **Chromebook / computer** | Drag to orbit and click the dots. Info appears in a side card. |
-
-Students don't sign in, and the app itself doesn't save or send any student data.
+Students don't sign in, and the app doesn't save or send any student data.
 
 ---
 
-## 1. Put it on GitHub Pages (about 10 minutes)
+## Updating your GitHub copy
 
-1. Sign in at github.com and click **New repository**. Name it, for example, `hammurabi-xr`, set it to **Public**, and click **Create**.
-2. On the new repo page, click **uploading an existing file**. Drag in **everything inside this folder**: `index.html`, `js/`, `vendor/`, `fonts/`, `models/`, `.nojekyll` and this README. Then click **Commit changes**.
-   *Tip: if the `.nojekyll` file is hidden on your computer, it's OK to skip it.*
-3. Go to **Settings → Pages**. Under *Build and deployment*, choose **Deploy from a branch**, branch **main**, folder **/ (root)**, and click **Save**.
-4. After a minute or two, the page shows your link. It looks like
-   `https://YOUR-USERNAME.github.io/hammurabi-xr/`
+1. On your repo page, click **Add file → Upload files**.
+2. Drag in **everything inside this folder**, and click **Commit changes**.
+3. If GitHub asks about replacing files, that's expected.
 
-> **iboss:** make sure `YOUR-USERNAME.github.io` is allowed on the network the headsets use.
+A few old files (`js/main.js`, `js/config.js`, `js/content.js`, `js/panels.js`, `models/`) are no longer used. They're harmless, and you can delete them on GitHub whenever you like.
 
-## 2. Test on one headset first
+## Links for ArborXR
 
-1. On a Quest 3, open the **Meta Quest Browser** and go to your link.
-2. Tap **Put it in this room**. Allow the permission prompt if one appears.
-3. Point at the floor and pull the trigger (or pinch) to set the stele down.
+Add each version you want as its own **WebXR Link** in ArborXR. The settings go at the end of your normal address.
 
-If you see the stele standing in your room, the content side is done.
+| ArborXR title (suggestion) | Link ending | What it does |
+|---|---|---|
+| Hammurabi | `/hammurabi-xr/` | All 9 dots visible, with a progress tracker |
+| Hammurabi – Detective | `/hammurabi-xr/?detective=on` | Dots start hidden. Students follow clues and point at the right spot to uncover each one |
+| Hammurabi – Quick Look | `/hammurabi-xr/?progress=off` | No tracker, just explore |
+| Hammurabi – Seated | `/hammurabi-xr/?mode=seated` | The stone appears in front of a seated student. They turn it instead of walking. |
+| Hammurabi – Español | `/hammurabi-xr/?lang=es` | Starts in Spanish |
+| (any of the above) + lock | add `&lock=1` (or `?lock=1`) | Hides Options, Move and Exit so students can't change things |
 
-## 3. Add it to ArborXR
+You can combine settings, for example `…/hammurabi-xr/?mode=seated&hunt=off&lock=1`.
 
-1. In ArborXR, go to **Content Library → Add Content → WebXR Link**. Paste your GitHub Pages link and give it a title, for example "Code of Hammurabi".
-2. Assign it to your headset group under the **Devices** tab.
-3. Students launch it from ArborXR Home.
+All settings:
 
-### Which browser opens it (important)
+- `lang=en|es`
+- `progress=on|off` (the older `hunt=` still works)
+- `detective=on|off` (`clues=` also works)
+- `mode=walk|seated`
+- `size=life|table`
+- `lock=1`
+- `exhibit=<folder name>`
 
-ArborXR recommends installing the **Wolvic** browser (as an APK, hidden from Home). WebXR links then open in a locked-down kiosk window, so students can't type in the address bar. ArborXR also notes that on newer Quest OS versions, the built-in Quest Browser may not be able to enter immersive mode when ArborXR launches a link.
+## iPad and iPhone
 
-What still needs testing: Wolvic added WebXR AR support in its **Chromium-based** build. ArborXR's guide recommends the **Gecko-based** build, and I couldn't confirm passthrough support for either build on Quest 3. So on one headset, try:
+Safari on iPad doesn't support the WebXR standard the Quest uses, so on an iPad the page works like this:
 
-1. **Wolvic (Chromium build)** launched from ArborXR. Does the **Put it in this room** button light up?
-2. If not, try **Wolvic (Gecko build)**.
-3. If neither does passthrough, **Visit the VR gallery** still works in Wolvic. For passthrough, students can open the link in the Quest Browser directly, for example from a bookmark.
+1. It shows the touch-screen 3D view with all the dots, panels, hunt and Spanish.
+2. A **See it in your room** button opens a copy of the stone (`model.usdz`) in Apple's AR Quick Look. Students point at the floor and walk around the life-size stone.
 
-The page checks what the browser supports. If passthrough isn't available, that button is greyed out and a message explains why.
+Inside Apple's viewer, there are no dots or panels. It's just the stone.
 
-## 4. Classroom tips
+To make the `.usdz` for a new exhibit, ask Claude to convert the exhibit's `model.glb`, then add `"usdz": "model.usdz"` to its `exhibit.json`.
 
-- **Space:** a life-size stele is 2.25 m (7½ ft) tall. Give each student about 2 × 2 m of clear floor to walk around it. In a tight room, press **Table size** and set a small one on a desk.
-- **Controls:** the floating toolbar has *Turn ‹ / Turn ›*, *Table size / Life size*, *Move*, *Hide dots* and *Exit*. The right thumbstick also turns the stele. Hand tracking works: pinch to select.
-- **Dots on the back:** dots 5, 6 and 7 are on the back of the stone, so students have to walk around it. That's on purpose.
+## What students can do
 
-## 5. Editing
+- **Dots:** select the 9 numbered dots on the stone. Dots 6–8 are on the back, so walking around pays off.
+- **Reading panel:** each dot opens a short reading with a "Think about it" question. Panels with laws show them in plain words first. The original 1915 wording is under **Tell me more**.
+- **Extras:**
+  - Dot 3 shows three real cuneiform signs.
+  - Dot 5 shows a then-and-now map.
+  - Dot 9 shows a height comparison next to the stone.
+- **Track my progress:** opened dots turn green, an "Explored: 3 of 9" tracker sits above the toolbar, and exploring all 9 shows a final big question.
+- **Detective mode:** the dots start hidden. A clue card above the tracker shows one clue at a time, such as "Near the bottom of the front, find the smooth spot where writing was rubbed away." When a student points near the right spot, the dot pops up, and selecting it opens its panel and moves on to the next clue. A **Hint** button uncovers the current dot for students who are stuck. On a Chromebook or iPad, students hover or tap near the spot. Clue wording lives in `exhibit.json` (`"clue"`), and `"clueRadius"` (in metres, default 0.2) sets how close the student has to point.
+- **Listen:** this button appears on any panel that has an audio clip (see below).
+- **Toolbar:** Turn ‹ / Turn ›, Move, Options, Exit. The right thumbstick also turns the stone, and the toolbar follows the student if they walk away.
+- **Options in the headset:** language, track my progress, Detective mode, walking or sitting, life size or table size.
 
-| To change… | Edit |
-|---|---|
-| Hotspot text, quotes, questions, or where the dots sit | `js/content.js` (plain text, with comments explaining each field) |
-| The 3D model, its size, or the table-size scale | `js/config.js` |
+## Adding the audio
 
-After editing, upload the changed file to GitHub again. Headsets get the new version the next time they open the link. You might need to reload once.
+Record from **RECORDING-SCRIPT.md** and name the files exactly as listed. Put them in:
 
-## 6. Swapping in a real 3D scan
+- `exhibits/hammurabi/audio/en/` → `01.mp3` … `09.mp3`, `finish.mp3`
+- `exhibits/hammurabi/audio/es/` → the same names
 
-The stele in this build is a **stand-in**: the relief and cuneiform are decorative, not copied from the real stone. To use a real scan:
+Upload them to the same folders on GitHub. The **Listen** button appears by itself for every clip that exists.
 
-1. Download a scan as **.glb** (best) or **.stl**. The *Scan The World* scan of the Louvre stele on MyMiniFactory is one option. Check the model's license on its page before using it.
-2. **Keep it light.** Quest browsers struggle with files over about 15 MB. Reduce the polygon count first, for example with Blender's *Decimate* modifier or by exporting a lower-detail mesh, to around 100k–300k triangles.
-3. Put the file in `models/` and set `modelUrl: 'models/yourfile.glb'` in `js/config.js`.
-4. If it loads lying down, set `modelUpAxis: 'z'`. If the relief faces sideways or backwards, set `modelRotationDeg` to `90`, `-90` or `180`.
+## Changing the words
 
-The dots find the stone's surface automatically, so they still land on the right sides.
+All the text, in English and Spanish, is in `exhibits/hammurabi/exhibit.json`. You can edit it in GitHub's file editor (pencil icon). It's picky about quotes and commas, so change only the words between the quote marks.
 
-**Quick test without editing anything:** add settings to the end of the link, for example
-`…/hammurabi-xr/?model=models/yourfile.stl&up=z&rot=180`
+Each dot also has:
 
-**Other link option:** `?quality=low` uses smaller textures, if a headset feels sluggish.
+- `h`: its height on the stone, from 0 (bottom) to 1 (top)
+- `angle`: where it sits around the stone, where 0 is the front (the relief side), 90 is the right side, 180 is the back, and −90 is the left side
 
-## Credits
+## Adding another artifact later
 
-- Built with [three.js](https://threejs.org) (MIT license, included in `vendor/`).
-- Cuneiform signs drawn with Noto Sans Cuneiform (SIL Open Font License, included in `fonts/`).
-- Law quotations: L. W. King's 1915 English translation (public domain).
-- Facts about the stele come from the Louvre's page on the Code of Hammurabi and the Wikipedia article "Code of Hammurabi".
+1. Make a new folder in `exhibits/`, for example `exhibits/ziggurat/`, with a `model.glb` and an `exhibit.json` copied from Hammurabi's and edited.
+2. Add it to `exhibits/index.json`.
+3. Link to it with `?exhibit=ziggurat`. When there's more than one exhibit, the start screen also shows a picker.
+
+You can also give an exhibit a 360° background for the VR gallery by putting an equirectangular image in its folder and adding `"backdrop": "yourimage.jpg"` to its `exhibit.json`.
+
+## Credits and licenses
+
+- **3D model:** "Stela of Hammurabi (replica)" by Peter Der Manuelian, Harvard Museum of the Ancient Near East (object 1901.10.1), licensed **CC BY-NC-SA 4.0**. The sign, floor and base were removed, the bottom was capped, and the side textures were resized for headsets. Under that license, this adapted model (`exhibits/hammurabi/model.glb`) is shared under the same CC BY-NC-SA 4.0 terms, for non-commercial use, with credit.
+- **Law quotations:** L. W. King's 1915 English translation (public domain).
+- **Facts:** the Louvre's page on the Code of Hammurabi and the Wikipedia article "Code of Hammurabi". The unit alignment comes from the MMUUSD Grade 5 Ancient Cultures planning guide.
+- **Code libraries:** three.js (MIT license, in `vendor/`) and the Noto Sans Cuneiform font (SIL Open Font License, in `fonts/`).
